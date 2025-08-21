@@ -1147,6 +1147,23 @@
                 return messageDate.toLocaleDateString();
             }
         }
+        <script>
+// Auto-refresh after email authentication callback
+(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAuthCallback =
+        urlParams.has('confirmation_token') || // Netlify confirmation link
+        urlParams.has('token') ||                // Generic token
+        urlParams.has('auth') ||                 // Custom auth
+        window.location.hash.includes('auth');
+
+    if (isAuthCallback) {
+        // Wait a short time, then reload to avoid freeze after auth
+        setTimeout(function() {
+            window.location.reload(true);
+        }, 2000); // 2 seconds delay
+    }
+})();
     </script>
 </body>
 </html>
